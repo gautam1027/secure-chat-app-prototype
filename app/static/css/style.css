@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Soria&display=swap');
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#0b141a;
+    color:white;
+}
+
+.container{
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+/* ---------------- HEADINGS ---------------- */
+
+h1,h2,h3,
+.welcome-text,
+.chat-header{
+    font-family:'Soria', serif;
+    font-weight:400;
+}
+
+/* ---------------- LOGIN PAGE ---------------- */
+
+.login-wrapper{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.welcome-text{
+    font-size:68px;
+    letter-spacing:1px;
+    margin-bottom:35px;
+    color:white;
+}
+
+.login-form{
+    width:320px;
+    display:flex;
+    flex-direction:column;
+}
+
+.login-form input{
+    margin:10px 0;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    outline:none;
+    font-family:Arial, sans-serif;
+}
+
+.login-form button{
+    margin-top:10px;
+}
+
+.create-link{
+    margin-top:18px;
+}
+
+.create-link a{
+    color:#25d366;
+    text-decoration:none;
+    font-size:14px;
+    font-family:Arial, sans-serif;
+}
+
+/* ---------------- CHAT PAGE ---------------- */
+
+.chat-layout{
+    display:flex;
+    height:100vh;
+}
+
+/* LEFT SIDE */
+
+.sidebar{
+    width:30%;
+    background:#111b21;
+    border-right:1px solid #222;
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar-top{
+    padding:20px;
+    border-bottom:1px solid #222;
+}
+
+.sidebar-top a{
+    color:#25d366;
+    text-decoration:none;
+    font-size:14px;
+    font-family:Arial, sans-serif;
+}
+
+.user-list{
+    flex:1;
+    overflow-y:auto;
+}
+
+.user-item{
+    padding:18px;
+    border-bottom:1px solid #1f2c34;
+    cursor:pointer;
+    font-family:Arial, sans-serif;
+}
+
+.user-item:hover{
+    background:#202c33;
+}
+
+/* RIGHT SIDE */
+
+.chat-panel{
+    width:70%;
+    display:flex;
+    flex-direction:column;
+    background:#0b141a;
+}
+
+.chat-header{
+    padding:20px;
+    font-size:34px;
+    background:#202c33;
+}
+
+#chat-box{
+    flex:1;
+    overflow-y:auto;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+}
+
+.msg{
+    max-width:60%;
+    padding:10px 14px;
+    margin:6px 0;
+    border-radius:10px;
+    word-wrap:break-word;
+    font-family:Arial, sans-serif;
+}
+
+.sent{
+    align-self:flex-end;
+    background:#005c4b;
+}
+
+.received{
+    align-self:flex-start;
+    background:#202c33;
+}
+
+.msg small{
+    display:block;
+    margin-top:5px;
+    font-size:11px;
+    opacity:0.8;
+}
+
+/* INPUT */
+
+#chat-form{
+    display:flex;
+    padding:15px;
+    background:#202c33;
+}
+
+#message{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    outline:none;
+    font-family:Arial, sans-serif;
+}
+
+/* BUTTONS */
+
+button{
+    margin-left:10px;
+    padding:12px 18px;
+    border:none;
+    background:#25d366;
+    color:black;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    font-family:Arial, sans-serif;
+}
+.rules{
+    font-size:12px;
+    color:#b8b8b8;
+    line-height:1.6;
+    margin:4px 0 12px 2px;
+    font-family:Arial, sans-serif;
+}
+.error-msg{
+    color:#ff4d4d;
+    font-size:14px;
+    margin:8px 0 12px 2px;
+    font-family:Arial, sans-serif;
+    font-weight:bold;
+}

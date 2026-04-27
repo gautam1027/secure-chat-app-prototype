@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="chat-layout">
+
+    <div class="sidebar">
+        <div class="sidebar-top">
+            <h2>{{ current }}</h2>
+            <a href="/logout">Logout</a>
+        </div>
+
+        <div class="user-list">
+            {% for user in users %}
+            <div class="user-item" onclick="openChat('{{ user.username }}')">
+                {{ user.username }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="chat-panel">
+
+        <div class="chat-header" id="chat-header">
+            Select User
+        </div>
+
+        <div id="chat-box"></div>
+
+        <form id="chat-form">
+            <input type="text" id="message" placeholder="Type message">
+            <button type="submit">Send</button>
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+const CURRENT_USER = "{{ current }}";
+</script>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+
+{% endblock %}

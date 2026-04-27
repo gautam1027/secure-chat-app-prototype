@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="login-wrapper">
+
+    <h1 class="welcome-text">REGISTER</h1>
+
+    <form method="POST" class="login-form">
+
+        <input type="text" name="username" placeholder="Username" required>
+
+        <input type="password" name="password" placeholder="Password" required>
+
+        <div class="rules">
+            8-10 characters<br>
+            Include uppercase, lowercase, number<br>
+            Only "_" allowed as symbol
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="error-msg">{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <button type="submit">Create Account</button>
+
+    </form>
+
+    <p class="create-link">
+        <a href="/login">Back to Login</a>
+    </p>
+
+</div>
+
+{% endblock %}
