@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="login-wrapper">
+<canvas id="bgCanvas"></canvas>
+
+<div class="glass-wrapper">
 
     <h1 class="welcome-text">REGISTER</h1>
 
-    <form method="POST" class="login-form">
+    <form method="POST" class="glass-form">
 
         <input type="text" name="username" placeholder="Username" required>
 
@@ -13,8 +15,8 @@
 
         <div class="rules">
             8-10 characters<br>
-            Include uppercase, lowercase, number<br>
-            Only "_" allowed as symbol
+            Uppercase, lowercase, number<br>
+            Only "_" symbol allowed
         </div>
 
         {% with messages = get_flashed_messages() %}
@@ -25,7 +27,7 @@
         {% endif %}
         {% endwith %}
 
-        <button type="submit">Create Account</button>
+        <button type="submit">Register</button>
 
     </form>
 
@@ -34,5 +36,7 @@
     </p>
 
 </div>
+
+<script src="{{ url_for('static', filename='js/particles.js') }}"></script>
 
 {% endblock %}

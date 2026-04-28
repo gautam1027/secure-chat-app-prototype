@@ -8,8 +8,13 @@ from flask_socketio import SocketIO, emit, join_room
 from config import Config
 from utils.db import init_db, get_connection
 from utils.auth import hash_password, verify_password
-from utils.crypto import generate_keys, encrypt_for_chat, decrypt_chat
-
+from utils.crypto import (
+    generate_keys,
+    encrypt_for_chat,
+    decrypt_chat,
+    sign_message,
+    verify_signature
+)
 app = Flask(__name__)
 app.config.from_object(Config)
 
@@ -234,13 +239,29 @@ def messages(receiver):
                 row["tag"],
                 private_key
             )
-        except:
+        except Exception:
             text = "[Decrypt Error]"
 
+        cur.execute(
+        "SELECT public_key FROM users WHERE username=?",
+        (row["sender"],)
+        )
+        pub = cur.fetchone()["public_key"]
+
+        if row["signature"]:
+            valid = verify_signature(
+            pub,
+            row["ciphertext"],
+            row["signature"]
+        )
+        else:
+            valid = False
+
         result.append({
-            "sender": row["sender"],
-            "message": text,
-            "time": row["timestamp"][11:16]
+        "sender": row["sender"],
+        "message": text,
+        "time": row["timestamp"][11:16],
+        "verified": valid
         })
 
     conn.close()
@@ -285,26 +306,36 @@ def handle_send(data):
         keys[sender],
         keys[receiver]
     )
+    cur.execute(
+    "SELECT private_key FROM users WHERE username=?",
+    (sender,)
+    )
+    row = cur.fetchone()
+    sender_private_key = row["private_key"]
+
+    signature = sign_message(sender_private_key, ciphertext)
 
     cur.execute("""
     INSERT INTO messages(
-        sender,
-        receiver,
-        wrapped_key_sender,
-        wrapped_key_receiver,
-        nonce,
-        ciphertext,
-        tag
+    sender,
+    receiver,
+    wrapped_key_sender,
+    wrapped_key_receiver,
+    nonce,
+    ciphertext,
+    tag,
+    signature
     )
-    VALUES(?,?,?,?,?,?,?)
+    VALUES(?,?,?,?,?,?,?,?)
     """, (
-        sender,
-        receiver,
-        wrapped_sender,
-        wrapped_receiver,
-        nonce,
-        ciphertext,
-        tag
+    sender,
+    receiver,
+    wrapped_sender,
+    wrapped_receiver,
+    nonce,
+    ciphertext,
+    tag,
+    signature
     ))
 
     conn.commit()

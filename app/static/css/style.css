@@ -135,6 +135,16 @@ h1,h2,h3,
     padding:20px;
     display:flex;
     flex-direction:column;
+
+    background-color:#08131a;
+
+    background-image:
+        linear-gradient(rgba(37,211,102,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+
+    background-size:32px 32px;
+
+    background-position:center;
 }
 
 .msg{
@@ -206,4 +216,66 @@ button{
     margin:8px 0 12px 2px;
     font-family:Arial, sans-serif;
     font-weight:bold;
+}
+#bgCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#020b12;
+    z-index:-1;
+}
+
+.glass-wrapper{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.glass-form{
+    width:340px;
+    padding:28px;
+    background: rgba(20,70,45,0.45);
+    border:1px solid rgba(255,255,255,0.10);
+    backdrop-filter:blur(14px);
+    border-radius:18px;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 0 35px rgba(0,0,0,0.35);
+}
+
+.glass-form input{
+    margin:10px 0;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:rgba(255,255,255,0.10);
+    color:white;
+    outline:none;
+}
+
+.glass-form input::placeholder{
+    color:#d0d0d0;
+}
+
+.glass-form button{
+    margin-top:10px;
+}
+
+.welcome-text{
+    font-size:72px;
+    color:white;
+    margin-bottom:25px;
+}
+.ok{
+    color:#25d366;
+    margin-left:6px;
+}
+
+.bad{
+    color:#ff6b6b;
+    margin-left:6px;
 }

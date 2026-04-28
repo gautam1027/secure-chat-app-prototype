@@ -1,6 +1,9 @@
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP, AES
 from Crypto.Random import get_random_bytes
+from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
+import base64
 
 
 def generate_keys():
@@ -40,3 +43,31 @@ def decrypt_chat(wrapped_key, nonce, ciphertext, tag, private_key):
     message = aes.decrypt_and_verify(ciphertext, tag)
 
     return message.decode()
+
+def sign_message(private_key_pem, data):
+    key = RSA.import_key(private_key_pem)
+
+    if isinstance(data, str):
+        data = data.encode()
+
+    h = SHA256.new(data)
+    signature = pkcs1_15.new(key).sign(h)
+
+    return base64.b64encode(signature).decode()
+
+
+def verify_signature(public_key_pem, data, signature_b64):
+    try:
+        key = RSA.import_key(public_key_pem)
+
+        if isinstance(data, str):
+            data = data.encode()
+
+        h = SHA256.new(data)
+        signature = base64.b64decode(signature_b64)
+
+        pkcs1_15.new(key).verify(h, signature)
+        return True
+
+    except Exception:
+        return False

@@ -65,7 +65,12 @@ async function loadMessages(){
 
         div.innerHTML = `
             <div>${item.message}</div>
-            <small>${item.time}</small>
+            <small>
+            ${item.time}
+            <span class="${item.verified ? 'ok' : 'bad'}">
+            ${item.verified ? '✓ Verified' : '⚠ Unverified'}
+            </span>
+            </small>
         `;
 
         box.appendChild(div);
