@@ -57,7 +57,7 @@ class Particle{
          let r = Math.random();
 
         if(r < 0.70){
-        this.color = "rgba(255,255,255,0.95)";
+        this.color = "rgba(255,255,255,1)";
         }
         else if(r < 0.95){
         this.color = "#2ad96a";
@@ -154,7 +154,7 @@ class Particle{
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
 
-    ctx.shadowBlur = this.mode === "swarm" ? 12 : 5;
+    ctx.shadowBlur = this.mode === "swarm" ? 14 : 6;
     ctx.shadowColor = this.mode === "swarm" ? "#2ad96a" : this.color;
 
     ctx.fillStyle = this.color;
@@ -197,7 +197,7 @@ function animate(){
         mouse.moving = false;
     }
 
-    ctx.fillStyle = "#179c47";
+    ctx.fillStyle = "rgba(0,0,0,1)";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     particles.forEach((p,i)=>{

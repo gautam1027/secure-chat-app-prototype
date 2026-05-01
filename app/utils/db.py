@@ -21,21 +21,22 @@ def init_db():
     """)
 
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS messages(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        sender TEXT,
-        receiver TEXT,
+CREATE TABLE IF NOT EXISTS messages(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender TEXT,
+    receiver TEXT,
 
-        wrapped_key_sender BLOB,
-        wrapped_key_receiver BLOB,
+    wrapped_key_sender BLOB,
+    wrapped_key_receiver BLOB,
 
-        nonce BLOB,
-        ciphertext BLOB,
-        tag BLOB,
+    nonce BLOB,
+    ciphertext BLOB,
+    tag BLOB,
 
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-    """)
+    signature BLOB,
+    timestamp TEXT
+)
+""")
 
     conn.commit()
     conn.close()

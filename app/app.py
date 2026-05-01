@@ -168,19 +168,23 @@ def send():
         keys[receiver]
     )
 
+    ist_time = datetime.now(ZoneInfo("Asia/Kolkata")).strftime("%Y-%m-%d %H:%M:%S")
+
     cur.execute("""
     INSERT INTO messages(
-        sender, receiver,
-        wrapped_key_sender,
-        wrapped_key_receiver,
-        nonce, ciphertext, tag
+    sender, receiver,
+    wrapped_key_sender,
+    wrapped_key_receiver,
+    nonce, ciphertext, tag,
+    timestamp
     )
-    VALUES(?,?,?,?,?,?,?)
+    VALUES(?,?,?,?,?,?,?,?)
     """, (
-        sender, receiver,
-        wrapped_sender,
-        wrapped_receiver,
-        nonce, ciphertext, tag
+    sender, receiver,
+    wrapped_sender,
+    wrapped_receiver,
+    nonce, ciphertext, tag,
+    ist_time
     ))
 
     conn.commit()
@@ -257,10 +261,20 @@ def messages(receiver):
         else:
             valid = False
 
+        now = datetime.now(ZoneInfo("Asia/Kolkata"))
+        dt = datetime.strptime(row["timestamp"], "%Y-%m-%d %H:%M:%S")
+
+        if dt.date() == now.date():
+            formatted_time = dt.strftime("%I:%M %p")
+        elif (now.date() - dt.date()).days == 1:
+            formatted_time = "Yesterday"
+        else:
+            formatted_time = dt.strftime("%d/%m/%y")
+
         result.append({
         "sender": row["sender"],
         "message": text,
-        "time": row["timestamp"][11:16],
+        "time": formatted_time,
         "verified": valid
         })
 
@@ -315,6 +329,8 @@ def handle_send(data):
 
     signature = sign_message(sender_private_key, ciphertext)
 
+    ist_time = datetime.now(ZoneInfo("Asia/Kolkata")).strftime("%Y-%m-%d %H:%M:%S")
+
     cur.execute("""
     INSERT INTO messages(
     sender,
@@ -324,9 +340,10 @@ def handle_send(data):
     nonce,
     ciphertext,
     tag,
-    signature
+    signature,
+    timestamp
     )
-    VALUES(?,?,?,?,?,?,?,?)
+    VALUES(?,?,?,?,?,?,?,?,?)
     """, (
     sender,
     receiver,
@@ -335,7 +352,8 @@ def handle_send(data):
     nonce,
     ciphertext,
     tag,
-    signature
+    signature,
+    ist_time
     ))
 
     conn.commit()

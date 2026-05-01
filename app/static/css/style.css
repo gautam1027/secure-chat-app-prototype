@@ -223,11 +223,15 @@ button{
     left:0;
     width:100%;
     height:100%;
-    background:#020b12;
-    z-index:-1;
+    background:black;
+    z-index:0;
 }
 
 .glass-wrapper{
+
+    position:relative;
+    z-index:2;
+    
     height:100vh;
     display:flex;
     flex-direction:column;
