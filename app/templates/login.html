@@ -7,10 +7,15 @@
 
     <h1 class="welcome-text">WELCOME</h1>
 
-    <form method="POST" class="glass-form">
+    <form method="POST" action="/login" class="glass-form">
 
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
+        <input type="text" name="username" placeholder="Username" autocomplete="off" required>
+
+        <input type="password" name="password"
+               placeholder="Password"
+               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d_]{8,10}$"
+               title="8-10 chars, uppercase, lowercase, number, '_' only"
+               required>
 
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -21,6 +26,7 @@
         {% endwith %}
 
         <button type="submit">Login</button>
+
     </form>
 
     <p class="create-link">
@@ -30,5 +36,11 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+
+<script>
+document.querySelector("form").addEventListener("submit", function(){
+    document.body.style.opacity = "0.99";
+});
+</script>
 
 {% endblock %}

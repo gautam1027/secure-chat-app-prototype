@@ -1,18 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>Chat with {{ receiver }}</h2>
+<div class="chat-container">
 
-<a href="/dashboard">Back</a>
+    <div class="chat-header">
+        <span id="chat-header">{{ receiver }}</span>
 
-<div id="chat-box"></div>
+        <div class="chat-actions">
+            <button onclick="openForwardUI()">Forward</button>
+            <a href="/dashboard">Back</a>
+        </div>
+    </div>
+    <div id="forward-bar" style="display:none; padding:10px; background:#111;">
+        <span id="selected-count">0 selected</span>
+        <button onclick="openForwardUI()">Forward</button>
+        <button onclick="cancelSelection()">Cancel</button>
+    </div>
 
-<form id="chat-form">
-    <input type="hidden" id="receiver" value="{{ receiver }}">
-    <input type="text" id="message" placeholder="Type message..." required>
-    <button type="submit">Send</button>
-</form>
+    <div id="chat-box"></div>
 
+    <form id="chat-form">
+        <input type="hidden" id="receiver" value="{{ receiver }}">
+        <input type="text" id="message" placeholder="Type message..." required>
+        <button type="submit">Send</button>
+    </form>
+
+</div>
+
+<script>
+    const CURRENT_USER = "{{ session['user'] }}";
+</script>
+
+<!-- MUST include socket BEFORE chat.js -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 
 {% endblock %}

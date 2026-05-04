@@ -3,21 +3,44 @@
 
 <div class="chat-layout">
 
+    <!-- ================= SIDEBAR ================= -->
     <div class="sidebar">
+
         <div class="sidebar-top">
             <h2>{{ current }}</h2>
             <a href="/logout">Logout</a>
+
+            <!-- SEARCH -->
+            <input 
+                type="text" 
+                id="searchUser" 
+                class="search-box" 
+                placeholder="Search users..."
+            >
         </div>
 
+        <!-- USER LIST -->
         <div class="user-list">
             {% for user in users %}
+            
             <div class="user-item" onclick="openChat('{{ user.username }}')">
-                {{ user.username }}
+
+                <span class="user-name">{{ user.username }}</span>
+
+                {% if unread_map and unread_map.get(user.username, 0) > 0 %}
+                    <span class="badge">
+                        {{ unread_map.get(user.username) }}
+                    </span>
+                {% endif %}
+
             </div>
+
             {% endfor %}
         </div>
+
     </div>
 
+    <!-- ================= CHAT PANEL ================= -->
     <div class="chat-panel">
 
         <div class="chat-header" id="chat-header">
@@ -26,8 +49,8 @@
 
         <div id="chat-box"></div>
 
-        <form id="chat-form">
-            <input type="text" id="message" placeholder="Type message">
+        <form id="chat-form" style="display:none;">
+            <input type="text" id="message" placeholder="Type message..." required>
             <button type="submit">Send</button>
         </form>
 
@@ -35,8 +58,10 @@
 
 </div>
 
+<!-- ================= JS ================= -->
 <script>
 const CURRENT_USER = "{{ current }}";
+const USER_PASSWORD = "{{ session['password'] }}";
 </script>
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>

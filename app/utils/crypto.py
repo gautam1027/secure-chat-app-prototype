@@ -4,6 +4,9 @@ from Crypto.Random import get_random_bytes
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
 import base64
+from Crypto.Cipher import AES
+from Crypto.Protocol.KDF import PBKDF2
+from Crypto.Random import get_random_bytes
 
 
 def generate_keys():
@@ -13,6 +16,13 @@ def generate_keys():
         key.export_key().decode()
     )
 
+def generate_rsa_keys():
+    key = RSA.generate(2048)
+
+    private_key = key.export_key()
+    public_key = key.publickey().export_key()
+
+    return public_key, private_key
 
 def encrypt_for_chat(message, sender_public, receiver_public):
     aes_key = get_random_bytes(16)
@@ -71,3 +81,27 @@ def verify_signature(public_key_pem, data, signature_b64):
 
     except Exception:
         return False
+
+
+
+def encrypt_private_key(private_key, password):
+    salt = get_random_bytes(16)
+    key = PBKDF2(password, salt, dkLen=32)
+
+    cipher = AES.new(key, AES.MODE_EAX)
+    ciphertext, tag = cipher.encrypt_and_digest(private_key)
+
+    return salt + cipher.nonce + tag + ciphertext
+
+
+def decrypt_private_key(encrypted_data, password):
+    salt = encrypted_data[:16]
+    nonce = encrypted_data[16:32]
+    tag = encrypted_data[32:48]
+    ciphertext = encrypted_data[48:]
+
+    key = PBKDF2(password, salt, dkLen=32)
+
+    cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
+    return cipher.decrypt_and_verify(ciphertext, tag)  
+
